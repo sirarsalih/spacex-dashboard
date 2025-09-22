@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
-    const [launches, setLaunches] = useState();
+    const [launches, setLaunches] = useState([]);
 
     useEffect(() => {
         populateRocketLaunchesData();
@@ -13,19 +13,25 @@ function App() {
         : <table className="table table-striped" aria-labelledby="tableLabel">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>DateUtc</th>
+                    <th>Success</th>
                 </tr>
             </thead>
             <tbody>
                 {launches.map(launch =>
-                    <tr key={launch.date}>
-                        <td>{launch.date}</td>
-                        <td>{launch.temperatureC}</td>
-                        <td>{launch.temperatureF}</td>
-                        <td>{launch.summary}</td>
+                    <tr key={launch.id}>
+                        <td>{launch.id}</td>
+                        <td>{launch.name}</td>
+                        <td>{launch.date_utc === "null" ? "TBD" : launch.date_utc}</td>
+                        <td>
+                            {launch.success === null && launch.dateUtc !== "null"
+                                ? "Outcome not known"
+                                : launch.success === null && launch.dateUtc === "null"
+                                    ? "Not launched"
+                                    : launch.success.toString()}
+                        </td>
                     </tr>
                 )}
             </tbody>
