@@ -6,7 +6,7 @@ The following tools were used to generate this project:
 The following steps were used to generate this project:
 - Create react project with create-vite: `npm init --yes vite@latest spacexdashboard.client -- --template=react`.
 - Update `vite.config.js` to set up proxying and certs.
-- Update `App` component to fetch and display weather information.
+- Update `App` component to fetch and display rocket launches information.
 - Create project file (`spacexdashboard.client.esproj`).
 - Create `launch.json` to enable debugging.
 - Add project to solution.

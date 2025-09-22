@@ -1,6 +1,6 @@
 @SpaceXDashboard.Server_HostAddress = http://localhost:5001
 
-GET {{SpaceXDashboard.Server_HostAddress}}/weatherforecast/
+GET {{SpaceXDashboard.Server_HostAddress}}/rocketlaunches/
 Accept: application/json
 
 ###

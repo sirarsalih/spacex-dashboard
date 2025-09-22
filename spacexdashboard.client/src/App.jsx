@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
-    const [forecasts, setForecasts] = useState();
+    const [launches, setLaunches] = useState();
 
     useEffect(() => {
-        populateWeatherData();
+        populateRocketLaunchesData();
     }, []);
 
-    const contents = forecasts === undefined
+    const contents = launches === undefined
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
         : <table className="table table-striped" aria-labelledby="tableLabel">
             <thead>
@@ -20,12 +20,12 @@ function App() {
                 </tr>
             </thead>
             <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
+                {launches.map(launch =>
+                    <tr key={launch.date}>
+                        <td>{launch.date}</td>
+                        <td>{launch.temperatureC}</td>
+                        <td>{launch.temperatureF}</td>
+                        <td>{launch.summary}</td>
                     </tr>
                 )}
             </tbody>
@@ -33,17 +33,17 @@ function App() {
 
     return (
         <div>
-            <h1 id="tableLabel">Weather forecast</h1>
+            <h1 id="tableLabel">Rocket launches</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
         </div>
     );
     
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
+    async function populateRocketLaunchesData() {
+        const response = await fetch('rocketlaunches');
         if (response.ok) {
             const data = await response.json();
-            setForecasts(data);
+            setLaunches(data);
         }
     }
 }
