@@ -72,10 +72,9 @@ function App() {
                             <table className="table table-striped" aria-labelledby="tableLabel">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
-                                        <th>Name</th>
-                                        <th>DateUtc</th>
-                                        <th>Success</th>
+                                        <th>Rocket Name</th>
+                                        <th>Launch Time</th>
+                                        <th>Outcome</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -85,15 +84,16 @@ function App() {
                                             style={{ cursor: 'pointer' }}
                                             onClick={() => handleLaunchClick(launch.id)}
                                         >
-                                            <td>{launch.id}</td>
                                             <td>{launch.name}</td>
-                                            <td>{launch.date_utc === "null" ? "TBD" : launch.date_utc}</td>
+                                            <td>{launch.date_utc === "null" ? "TBD" : formatDate(launch.date_utc)}</td>
                                             <td>
-                                                {launch.success === null && launch.dateUtc !== "null"
-                                                    ? "Outcome not known"
-                                                    : launch.success === null && launch.dateUtc === "null"
+                                                {launch.success === null && launch.dateUtc !== null
+                                                    ? "Unknown"
+                                                    : launch.success === null && launch.dateUtc === null
                                                         ? "Not launched"
-                                                        : launch.success.toString()}
+                                                        : launch.success === true
+                                                            ? "Success"
+                                                            : "Failed"}
                                             </td>
                                         </tr>
                                     )}
@@ -111,6 +111,28 @@ function App() {
             )}
         </div>
     );
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const year = date.getFullYear();
+
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // convert 0 to 12
+        const strHours = String(hours).padStart(2, '0');
+
+        // Get timezone abbreviation using Intl.DateTimeFormat
+        const timeZone = Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
+            .formatToParts(date)
+            .find(part => part.type === 'timeZoneName')?.value || '';
+
+        return `${day}-${month}-${year} ${strHours}:${minutes} ${ampm} ${timeZone}`;
+    }
 
     async function populateRocketLaunchesData() {
         const response = await fetch('rocketlaunches');

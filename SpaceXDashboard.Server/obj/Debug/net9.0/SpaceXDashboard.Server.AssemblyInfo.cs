@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SpaceXDashboard.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f36cd70ee5231a255a12a210f5a8b81ecd4d856")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8adf0c1afd8ae5e3a7eeb1657bc6b438d8bf9e69")]
 [assembly: System.Reflection.AssemblyProductAttribute("SpaceXDashboard.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SpaceXDashboard.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
