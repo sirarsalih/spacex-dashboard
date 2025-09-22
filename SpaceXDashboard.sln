@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "spacexdashboard.client", "spacexdashboard.client\spacexdashboard.client.esproj", "{837C67BC-8058-4547-FD01-D6A9BE0C05B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceXDashboard.Server", "SpaceXDashboard.Server\SpaceXDashboard.Server.csproj", "{CCA55329-4DA7-4C29-A913-B211A56553CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{837C67BC-8058-4547-FD01-D6A9BE0C05B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{837C67BC-8058-4547-FD01-D6A9BE0C05B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{837C67BC-8058-4547-FD01-D6A9BE0C05B1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{837C67BC-8058-4547-FD01-D6A9BE0C05B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{837C67BC-8058-4547-FD01-D6A9BE0C05B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{837C67BC-8058-4547-FD01-D6A9BE0C05B1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CCA55329-4DA7-4C29-A913-B211A56553CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCA55329-4DA7-4C29-A913-B211A56553CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCA55329-4DA7-4C29-A913-B211A56553CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCA55329-4DA7-4C29-A913-B211A56553CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8362B57E-1194-446F-802F-73315DEAEDCF}
+	EndGlobalSection
+EndGlobal
