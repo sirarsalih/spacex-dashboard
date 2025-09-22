@@ -5,7 +5,7 @@ function App() {
     const [launches, setLaunches] = useState([]);
     const [selectedLaunch, setSelectedLaunch] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 30;
+    const itemsPerPage = 20;
 
     useEffect(() => {
         populateRocketLaunchesData();
@@ -46,7 +46,7 @@ function App() {
 
     return (
         <div>
-            {selectedLaunch ? (<h1 id="launchLabel" style={{ marginTop: '-300px', textAlign: 'center' }}>
+            {selectedLaunch ? (<h1 id="launchLabel" style={{ textAlign: 'center' }}>
                 <div>
                     {selectedLaunch.links.patch.missionPatchSmall && (
                         <img
@@ -55,7 +55,27 @@ function App() {
                         />
                     )}
                 </div>
-                {selectedLaunch.name}</h1>)
+                {selectedLaunch.name}
+                {selectedLaunch.links?.video ? (() => {
+                    // Convert YouTube URL to embed format and append autoplay
+                    const videoUrl = selectedLaunch.links.video.includes("watch?v=")
+                        ? selectedLaunch.links.video.replace("watch?v=", "embed/") + "?autoplay=1"
+                        : selectedLaunch.links.video + "?autoplay=1";
+
+                    return (
+                        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                            <iframe
+                                width="560"
+                                height="315"
+                                src={videoUrl}
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                    );
+                })() : null} </h1>)
                 : (<><h1 id="tableLabel" style={{ textAlign: 'center' }}>Rocket Launches</h1></>)}
 
             {selectedLaunch ? (
@@ -70,8 +90,12 @@ function App() {
                                     ? "Success"
                                     : "Failed"}
                     </p>
-                    <p><strong>Details: </strong>{selectedLaunch.details}</p>
-                    <button onClick={handleBackToList}>Back to List</button>
+                    <p><strong>Details: </strong>{selectedLaunch.details && selectedLaunch.details.trim() !== ""
+                        ? selectedLaunch.details
+                        : "N/A"}</p>
+                    <div style={{ textAlign: 'center' }}>
+                        <button onClick={handleBackToList}>Back to List</button>
+                    </div>                    
                 </div>
             ) : (
                 <>
@@ -82,7 +106,6 @@ function App() {
                             <table className="table table-striped" aria-labelledby="tableLabel">
                                 <thead>
                                         <tr style={{ textAlign: 'left' }}>
-                                        <th>Launch Id</th>
                                         <th>Launch Name</th>
                                         <th>Launch Time</th>
                                         <th>Outcome</th>
@@ -94,12 +117,20 @@ function App() {
                                             key={launch.id}
                                             style={{ cursor: 'pointer' }}
                                             onClick={() => handleLaunchClick(launch.id)}
-                                        >
-                                            <td>
-                                                {launch.id}
-                                            </td>
+                                        >                                       
                                             <td>                                              
-                                                {launch.name}
+                                                {launch.links.patch.missionPatchSmall && (
+                                                    <img
+                                                        src={launch.links.patch.missionPatchSmall}
+                                                        alt={`${launch.name} patch`}
+                                                        style={{
+                                                            width: '30px',
+                                                            height: '30px',
+                                                            marginRight: '8px',
+                                                            verticalAlign: 'middle'
+                                                        }}
+                                                    />
+                                                )} {launch.name}
                                             </td>
                                             <td>{launch.dateUtcRaw === "null" ? "TBD" : formatDate(launch.dateUtcRaw)}</td>
                                             <td>
@@ -116,7 +147,7 @@ function App() {
                                 </tbody>
                             </table>
 
-                            <div style={{ marginTop: '10px' }}>
+                                    <div style={{ marginTop: '10px', textAlign: 'center' }}>
                                 <button onClick={handlePrev} disabled={currentPage === 1}>Previous</button>
                                 <span style={{ margin: '0 10px' }}>Page {currentPage} of {totalPages}</span>
                                 <button onClick={handleNext} disabled={currentPage === totalPages}>Next</button>
