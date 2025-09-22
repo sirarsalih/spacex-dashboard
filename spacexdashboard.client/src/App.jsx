@@ -46,11 +46,11 @@ function App() {
 
     return (
         <div>
-            <h1 id="tableLabel">Rocket launches</h1>
+
+            {selectedLaunch ? (<h1 id="launchLabel">Rocket Launch Details</h1>) : (<><h1 id="tableLabel">Rocket Launches</h1></>)}
 
             {selectedLaunch ? (
-                <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '10px' }}>                    
-                    <h2>Rocket Launch Details</h2>
+                <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '10px' }}>                                 
                     <p><strong>Id:</strong> {selectedLaunch.id}</p>
                     <p><strong>Name:</strong> {selectedLaunch.name}</p>
                     <p><strong>DateUtc:</strong> {selectedLaunch.date_utc === "null" ? "TBD" : selectedLaunch.date_utc}</p>
