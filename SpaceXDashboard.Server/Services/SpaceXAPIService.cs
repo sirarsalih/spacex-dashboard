@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SpaceXDashboard.Server.Controllers;
 using SpaceXDashboard.Server.Entities;
+using System.Text.Json;
 
 namespace SpaceXDashboard.Server.Services
 {
@@ -25,10 +28,10 @@ namespace SpaceXDashboard.Server.Services
         {
             try
             {
-                _logger.LogDebug("Fetching SpaceX rocket launches...");
-                var launches = await _httpClient.GetFromJsonAsync<List<RocketLaunch>>(
-                    "https://api.spacexdata.com/v5/launches"
-                );
+                _logger.LogDebug("Fetching SpaceX rocket launches...");        
+                var json = await _httpClient.GetStringAsync("https://api.spacexdata.com/v5/launches");
+
+                var launches = JsonConvert.DeserializeObject<List<RocketLaunch>>(json);
 
                 return launches ?? new List<RocketLaunch>();
             }
@@ -44,9 +47,12 @@ namespace SpaceXDashboard.Server.Services
             try
             {
                 _logger.LogDebug("Fetching SpaceX rocket launch with id {id}...", id);
-                var launch = await _httpClient.GetFromJsonAsync<RocketLaunch>(
+
+                var json = await _httpClient.GetStringAsync(
                     $"https://api.spacexdata.com/v5/launches/{id}"
                 );
+
+                var launch = JsonConvert.DeserializeObject<RocketLaunch>(json);
 
                 return launch;
             }

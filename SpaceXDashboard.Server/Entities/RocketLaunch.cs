@@ -1,51 +1,61 @@
-﻿using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SpaceXDashboard.Server.Entities
 {
     public class RocketLaunch
     {
+        [JsonProperty("id")]
         public string Id { get; set; }
-        [JsonPropertyName("rocket")]
-        public string RocketId { get; set; }
+
+        [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonPropertyName("date_utc")]
+
+        [JsonProperty("rocket")]
+        public string RocketId { get; set; }
+
+        [JsonProperty("date_utc")]
         public string DateUtcRaw { get; set; } //Launch date
 
+        [JsonProperty("success")]
         public bool? Success { get; set; } //Null = upcoming launch        
 
-        [JsonPropertyName("launchpad")]
+        [JsonProperty("launchpad")]
         public string LaunchpadId { get; set; } //Launch location
 
-        [JsonPropertyName("flight_number")]
+        [JsonProperty("flight_number")]
         public int? FlightNumber { get; set; } //SpaceX flight number
 
-        [JsonPropertyName("details")]
-        public string Details { get; set; } //Text description of the launch
+        [JsonProperty("details")]
+        public string Details { get; set; } //Text description of the launch    
 
-        [JsonPropertyName("links")]
+        [JsonProperty("links")]
         public LaunchLinks Links { get; set; } //Web links including articles, Wikipedia, video and patch images
     }
 
     public class LaunchLinks
     {
-        [JsonPropertyName("presskit")]
+        [JsonProperty("presskit")]
         public string Presskit { get; set; }
-        
-        [JsonPropertyName("article_link")]
-        public string Article { get; set; }
 
-        [JsonPropertyName("wikipedia")]
+        [JsonProperty("article")]
+        public string Article { get; set; }   
+
+        [JsonProperty("wikipedia")]
         public string Wikipedia { get; set; }
 
-        [JsonPropertyName("video_link")]
-        public string Video { get; set; }
+        [JsonProperty("webcast")]
+        public string Video { get; set; }    
 
-        [JsonPropertyName("mission_patch")]
-        public string MissionPatch { get; set; }
+        [JsonProperty("patch")]
+        public Patch Patch { get; set; }     
+    }
 
-        [JsonPropertyName("mission_patch_small")]
+    public class Patch
+    {
+        [JsonProperty("small")]
         public string MissionPatchSmall { get; set; }
-    }    
+
+        [JsonProperty("large")]
+        public string MissionPatch { get; set; }
+    }
 }

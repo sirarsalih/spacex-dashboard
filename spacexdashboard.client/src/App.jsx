@@ -46,21 +46,31 @@ function App() {
 
     return (
         <div>
-
-            {selectedLaunch ? (<h1 id="launchLabel">Rocket Launch Details</h1>) : (<><h1 id="tableLabel">Rocket Launches</h1></>)}
+            {selectedLaunch ? (<h1 id="launchLabel" style={{ marginTop: '-300px', textAlign: 'center' }}>
+                <div>
+                    {selectedLaunch.links.patch.missionPatchSmall && (
+                        <img
+                            src={selectedLaunch.links.patch.missionPatchSmall}
+                            alt={`${selectedLaunch.name} patch`}                            
+                        />
+                    )}
+                </div>
+                {selectedLaunch.name}</h1>)
+                : (<><h1 id="tableLabel" style={{ textAlign: 'center' }}>Rocket Launches</h1></>)}
 
             {selectedLaunch ? (
-                <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '10px' }}>                                 
-                    <p><strong>Id:</strong> {selectedLaunch.id}</p>
-                    <p><strong>Name:</strong> {selectedLaunch.name}</p>
-                    <p><strong>DateUtc:</strong> {selectedLaunch.date_utc === "null" ? "TBD" : selectedLaunch.date_utc}</p>
-                    <p><strong>Success: </strong>
-                        {selectedLaunch.success === null && selectedLaunch.dateUtc !== "null"
-                            ? "Outcome not known"
-                            : selectedLaunch.success === null && selectedLaunch.dateUtc === "null"
+                <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '10px' }}>                   
+                    <p><strong>Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>                   
+                    <p><strong>Outcome: </strong>
+                        {selectedLaunch.success === null && selectedLaunch.dateUtc !== null
+                            ? "Unknown"
+                            : selectedLaunch.success === null && selectedLaunch.dateUtc === null
                                 ? "Not launched"
-                                : selectedLaunch.success.toString()}
+                                : selectedLaunch.success === true
+                                    ? "Success"
+                                    : "Failed"}
                     </p>
+                    <p><strong>Details: </strong>{selectedLaunch.details}</p>
                     <button onClick={handleBackToList}>Back to List</button>
                 </div>
             ) : (
@@ -71,8 +81,9 @@ function App() {
                         <>
                             <table className="table table-striped" aria-labelledby="tableLabel">
                                 <thead>
-                                    <tr>
-                                        <th>Rocket Name</th>
+                                        <tr style={{ textAlign: 'left' }}>
+                                        <th>Launch Id</th>
+                                        <th>Launch Name</th>
                                         <th>Launch Time</th>
                                         <th>Outcome</th>
                                     </tr>
@@ -84,12 +95,17 @@ function App() {
                                             style={{ cursor: 'pointer' }}
                                             onClick={() => handleLaunchClick(launch.id)}
                                         >
-                                            <td>{launch.name}</td>
-                                            <td>{launch.date_utc === "null" ? "TBD" : formatDate(launch.date_utc)}</td>
                                             <td>
-                                                {launch.success === null && launch.dateUtc !== null
+                                                {launch.id}
+                                            </td>
+                                            <td>                                              
+                                                {launch.name}
+                                            </td>
+                                            <td>{launch.dateUtcRaw === "null" ? "TBD" : formatDate(launch.dateUtcRaw)}</td>
+                                            <td>
+                                                {launch.success === null && launch.dateUtcRaw !== null
                                                     ? "Unknown"
-                                                    : launch.success === null && launch.dateUtc === null
+                                                    : launch.success === null && launch.dateUtcRaw === null
                                                         ? "Not launched"
                                                         : launch.success === true
                                                             ? "Success"
