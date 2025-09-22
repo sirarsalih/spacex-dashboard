@@ -30,6 +30,9 @@ yarn-error.log
 .vs
 .vs/*
 .vs/*/*/*
+.vs/SpaceXDashboard/v17/.suo
+.vs/SpaceXDashboard/v17/DocumentLayout.backup.json
+.vs/SpaceXDashboard/v17/DocumentLayout.json
 
 # Miscellaneous
 /.angular/cache
