@@ -47,6 +47,5 @@ namespace SpaceXDashboard.Server.Entities
 
         [JsonPropertyName("mission_patch_small")]
         public string MissionPatchSmall { get; set; }
-    }
-    }
+    }    
 }
