@@ -46,7 +46,7 @@ function App() {
 
     return (
         <div>
-            {selectedLaunch ? (<h1 id="launchLabel" style={{ textAlign: 'center' }}>
+            {selectedLaunch ? (<h1 id="launchLabel" style={{ marginTop: '-10px', textAlign: 'center' }}>
                 <div>
                     {selectedLaunch.links.patch.missionPatchSmall && (
                         <img
@@ -79,7 +79,8 @@ function App() {
                 : (<><h1 id="tableLabel" style={{ textAlign: 'center' }}>Rocket Launches</h1></>)}
 
             {selectedLaunch ? (
-                <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '10px' }}>                   
+                <div style={{ marginTop: '20px', padding: '10px' }}>
+                    <p>Launch ID: {selectedLaunch.id}</p>
                     <p><strong>Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>                   
                     <p><strong>Outcome: </strong>
                         {selectedLaunch.success === null && selectedLaunch.dateUtc !== null
