@@ -1,2 +1,2 @@
-# spacex-dashboard
+# SpaceX Dashboard
 SpaceX Dashboard
