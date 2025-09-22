@@ -7,6 +7,7 @@ namespace SpaceXDashboard.Server.Services
     public interface ISpaceXAPIService
     {
         public Task<IEnumerable<RocketLaunch>> GetRocketLaunchesAsync();
+        public Task<RocketLaunch?> GetRocketLaunchAsync(string id);
     }
 
     public class SpaceXAPIService : ISpaceXAPIService
@@ -35,6 +36,24 @@ namespace SpaceXDashboard.Server.Services
             {
                 _logger.LogError(ex, "Error fetching SpaceX rocket launches");
                 return Enumerable.Empty<RocketLaunch>();
+            }
+        }
+
+        public async Task<RocketLaunch?> GetRocketLaunchAsync(string id)
+        {
+            try
+            {
+                _logger.LogDebug("Fetching SpaceX rocket launch with id {id}...", id);
+                var launch = await _httpClient.GetFromJsonAsync<RocketLaunch>(
+                    $"https://api.spacexdata.com/v5/launches/{id}"
+                );
+
+                return launch;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching SpaceX rocket launch with id {id}", id);
+                return null;
             }
         }
     }

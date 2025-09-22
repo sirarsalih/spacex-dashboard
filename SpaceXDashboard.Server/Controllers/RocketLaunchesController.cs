@@ -17,11 +17,18 @@ namespace SpaceXDashboard.Server.Controllers
             _spaceXAPIService = spaceXAPIService;
         }
 
-        [HttpGet(Name = "GetRocketLaunches")]
+        [HttpGet]
         public async Task<IEnumerable<RocketLaunch>> GetAsync()
         {
             _logger.LogDebug("Fetching SpaceX rocket launches from API...");
             return await _spaceXAPIService.GetRocketLaunchesAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<RocketLaunch?> GetAsync(string id)
+        {
+            _logger.LogDebug("Fetching SpaceX rocket launch from API...");
+            return await _spaceXAPIService.GetRocketLaunchAsync(id);
         }
     }
 }
