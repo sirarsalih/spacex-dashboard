@@ -21,7 +21,12 @@ namespace SpaceXDashboard.Server.Controllers
         public async Task<IEnumerable<RocketLaunch>> GetAsync()
         {
             _logger.LogDebug("Fetching SpaceX rocket launches from API...");
-            return await _spaceXAPIService.GetRocketLaunchesAsync();
+            var launches = await _spaceXAPIService.GetRocketLaunchesAsync();
+
+            return launches
+                .Where(l => !string.IsNullOrEmpty(l.DateUtcRaw) && l.DateUtcRaw != "null")
+                .OrderByDescending(l => DateTime.Parse(l.DateUtcRaw))
+                .ToList();
         }
 
         [HttpGet("{id}")]
