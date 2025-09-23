@@ -136,16 +136,15 @@ function App() {
 
                         {selectedLaunch.rocketData && (
                             <>
-                                <h2>Rocket Details</h2>
+                                <h2>Rocket Details</h2>                                
                                 <p><strong>Name:</strong> {selectedLaunch.rocketData.name}</p>
                                 <p><strong>Type:</strong> {selectedLaunch.rocketData.type}</p>
                                 <p><strong>Country:</strong> {selectedLaunch.rocketData.country}</p>
                                 <p><strong>Company:</strong> {selectedLaunch.rocketData.company}</p>
-                                <p><strong>Description:</strong> {selectedLaunch.rocketData.description}</p>
-
+                                <p><strong>Description:</strong> {selectedLaunch.rocketData.description}</p>     
                                 {selectedLaunch.rocketData.flickrImages?.length > 0 && (
                                     <div>
-                                        <h3>Rocket Images</h3>
+                                        <p><strong>Images:</strong></p>
                                         <div
                                             style={{
                                                 display: 'grid',
