@@ -5,7 +5,7 @@ using SpaceXDashboard.Server.Services;
 namespace SpaceXDashboard.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("rockets")]
     public class RocketsController : ControllerBase
     {
         private readonly ILogger<RocketsController> _logger;

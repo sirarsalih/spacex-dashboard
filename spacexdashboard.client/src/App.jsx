@@ -13,6 +13,7 @@ function App() {
     useEffect(() => {
         populateRocketLaunchesData();
 
+        // Handle browser back/forward
         const handlePopState = (event) => {
             if (event.state?.launchId) {
                 handleLaunchClick(event.state.launchId, false);
@@ -24,6 +25,7 @@ function App() {
         return () => window.removeEventListener("popstate", handlePopState);
     }, []);
 
+    // Filter + Sort
     useEffect(() => {
         let filtered = launches;
         if (searchQuery.trim() !== "") {
@@ -70,16 +72,26 @@ function App() {
     const handleNext = () => { if (currentPage < totalPages) setCurrentPage(currentPage + 1); };
     const handlePrev = () => { if (currentPage > 1) setCurrentPage(currentPage - 1); };
 
+    // Fetch launch + rocket details
     const handleLaunchClick = async (launchId, push = true) => {
         try {
-            const response = await fetch(`rocketlaunches/${launchId}`);
-            if (response.ok) {
-                const data = await response.json();
-                setSelectedLaunch(data);
-                if (push) window.history.pushState({ launchId }, "", `${launchId}`);
-            } else setSelectedLaunch(null);
+            // Fetch launch
+            const launchResponse = await fetch(`/rocketlaunches/${launchId}`);      
+            if (!launchResponse.ok) throw new Error(await launchResponse.text());
+            const launchData = await launchResponse.json();
+   
+            // Fetch rocket
+            let rocketData = null;
+            if (launchData?.rocketId) {
+                const rocketResponse = await fetch(`/rockets/${launchData.rocketId}`);        
+                if (rocketResponse.ok) rocketData = await rocketResponse.json();
+            }
+
+            setSelectedLaunch({ ...launchData, rocketData });
+
+            if (push) window.history.pushState({ launchId }, "", `${launchId}`);
         } catch (err) {
-            console.error(err);
+            console.error('Failed to fetch launch or rocket data:', err);
             setSelectedLaunch(null);
         }
     };
@@ -95,51 +107,50 @@ function App() {
     return (
         <div>
             {selectedLaunch ? (
-                <h1 id="launchLabel" style={{ marginTop: '-10px', textAlign: 'center' }}>
-                    <div>
-                        {selectedLaunch.links.patch.missionPatchSmall && (
-                            <img
-                                src={selectedLaunch.links.patch.missionPatchSmall}
-                                alt={`${selectedLaunch.name} patch`}
+                <div style={{ textAlign: 'center', marginTop: '-10px' }}>
+                    {selectedLaunch.links?.patch?.missionPatchSmall && (
+                        <img src={selectedLaunch.links.patch.missionPatchSmall} alt={`${selectedLaunch.name} patch`} />
+                    )}
+                    <h1>{selectedLaunch.name}</h1>
+                    {selectedLaunch.links?.webcast && (
+                        <div style={{ marginTop: '20px' }}>
+                            <iframe
+                                width="560"
+                                height="315"
+                                src={`https://www.youtube.com/embed/${selectedLaunch.links.youTubeId}?autoplay=1`}
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
                             />
+                        </div>
+                    )}
+
+                    <div style={{ marginTop: '20px', padding: '10px', textAlign: 'left', maxWidth: '700px', margin: 'auto' }}>
+                        <p><strong>Launch ID:</strong> {selectedLaunch.id}</p>
+                        <p><strong>Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>
+                        <p><strong>Outcome:</strong> {selectedLaunch.success === null
+                            ? selectedLaunch.dateUtcRaw === null ? "Not launched" : "Unknown"
+                            : selectedLaunch.success ? "Success" : "Failed"}</p>
+                        <p><strong>Details:</strong> {selectedLaunch.details?.trim() || "N/A"}</p>
+
+                        {selectedLaunch.rocketData && (
+                            <>
+                                <h2>Rocket Details</h2>
+                                <p><strong>Name:</strong> {selectedLaunch.rocketData.name}</p>
+                                <p><strong>Type:</strong> {selectedLaunch.rocketData.type}</p>
+                                <p><strong>Country:</strong> {selectedLaunch.rocketData.country}</p>
+                                <p><strong>Company:</strong> {selectedLaunch.rocketData.company}</p>
+                                <p><strong>Description:</strong> {selectedLaunch.rocketData.description}</p>
+                            </>
                         )}
                     </div>
-                    {selectedLaunch.name}
-                    {selectedLaunch.links?.webcast && (() => {
-                        const videoUrl = `https://www.youtube.com/embed/${selectedLaunch.links.youTubeId}?autoplay=1`;
-                        return (
-                            <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                                <iframe
-                                    width="560"
-                                    height="315"
-                                    src={videoUrl}
-                                    title="YouTube video player"
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                />
-                            </div>
-                        );
-                    })()}
-                </h1>
+                </div>
             ) : (
                 <>
                     <img src="/spacex-logo-animation.gif" alt="App Logo" width="400" style={{ marginLeft: '115px', marginTop: '-150px' }} />
                     <div style={{ fontSize: '10px', marginLeft: '115px' }}>Logo design & animation by Dmitriy Ivanenko</div>
-                </>
-            )}
 
-            {selectedLaunch ? (
-                <div style={{ marginTop: '20px', padding: '10px' }}>
-                    <p><strong>Launch ID:</strong> {selectedLaunch.id}</p>
-                    <p><strong>Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>
-                    <p><strong>Outcome:</strong> {selectedLaunch.success === null
-                        ? selectedLaunch.dateUtcRaw === null ? "Not launched" : "Unknown"
-                        : selectedLaunch.success ? "Success" : "Failed"}</p>
-                    <p><strong>Details:</strong> {selectedLaunch.details?.trim() || "N/A"}</p>
-                </div>
-            ) : (
-                <>
                     {launches.length === 0 ? (
                         <p><em>Loading rocket launches...</em></p>
                     ) : (
@@ -159,28 +170,13 @@ function App() {
                                     <thead>
                                         <tr style={{ textAlign: 'left', cursor: 'pointer' }}>
                                             <th onClick={() => handleSort('name')}>
-                                                Sat Name{' '}
-                                                <span style={{ display: 'inline-block', width: '20px' }}>
-                                                    {sortConfig.key === 'name'
-                                                        ? (sortConfig.direction === 'asc' ? '↑' : '↓')
-                                                        : '↑↓'}
-                                                </span>
+                                                Sat Name <span>{sortConfig.key === 'name' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
                                             </th>
                                             <th onClick={() => handleSort('date')}>
-                                                Launch Time{' '}
-                                                <span style={{ display: 'inline-block', width: '20px' }}>
-                                                    {sortConfig.key === 'date'
-                                                        ? (sortConfig.direction === 'asc' ? '↑' : '↓')
-                                                        : '↑↓'}
-                                                </span>
+                                                Launch Time <span>{sortConfig.key === 'date' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
                                             </th>
                                             <th onClick={() => handleSort('outcome')}>
-                                                Outcome{' '}
-                                                <span style={{ display: 'inline-block', width: '20px' }}>
-                                                    {sortConfig.key === 'outcome'
-                                                        ? (sortConfig.direction === 'asc' ? '↑' : '↓')
-                                                        : '↑↓'}
-                                                </span>
+                                                Outcome <span>{sortConfig.key === 'outcome' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
                                             </th>
                                         </tr>
                                     </thead>
@@ -188,7 +184,7 @@ function App() {
                                         {currentLaunches.map(launch => (
                                             <tr key={launch.id} style={{ cursor: 'pointer' }} onClick={() => handleLaunchClick(launch.id)}>
                                                 <td>
-                                                    {launch.links.patch.missionPatchSmall && (
+                                                    {launch.links?.patch?.missionPatchSmall && (
                                                         <img
                                                             src={launch.links.patch.missionPatchSmall}
                                                             alt={`${launch.name} patch`}
@@ -198,11 +194,9 @@ function App() {
                                                     {launch.name}
                                                 </td>
                                                 <td>{launch.dateUtcRaw === "null" ? "TBD" : formatDate(launch.dateUtcRaw)}</td>
-                                                <td>
-                                                    {launch.success === null
-                                                        ? launch.dateUtcRaw === null ? "Not launched" : "Unknown"
-                                                        : launch.success ? "Success" : "Failed"}
-                                                </td>
+                                                <td>{launch.success === null
+                                                    ? launch.dateUtcRaw === null ? "Not launched" : "Unknown"
+                                                    : launch.success ? "Success" : "Failed"}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -240,7 +234,7 @@ function App() {
     async function populateRocketLaunchesData(retries = 5, delay = 2000) {
         for (let i = 0; i < retries; i++) {
             try {
-                const response = await fetch('rocketlaunches');
+                const response = await fetch('/rocketlaunches');
                 if (response.ok) {
                     const data = await response.json();
                     setLaunches(data);
