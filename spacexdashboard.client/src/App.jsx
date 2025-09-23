@@ -53,7 +53,7 @@ function App() {
             if (response.ok) {
                 const data = await response.json();
                 setSelectedLaunch(data);
-                if (push) window.history.pushState({ launchId }, "", `#launch-${launchId}`);
+                if (push) window.history.pushState({ launchId }, "", `${launchId}`);
             } else {
                 setSelectedLaunch(null);
             }
