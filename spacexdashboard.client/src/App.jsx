@@ -56,12 +56,8 @@ function App() {
                     )}
                 </div>
                 {selectedLaunch.name}
-                {selectedLaunch.links?.video ? (() => {
-                    // Convert YouTube URL to embed format and append autoplay
-                    const videoUrl = selectedLaunch.links.video.includes("watch?v=")
-                        ? selectedLaunch.links.video.replace("watch?v=", "embed/") + "?autoplay=1"
-                        : selectedLaunch.links.video + "?autoplay=1";
-
+                {selectedLaunch.links?.webcast ? (() => {
+                    var videoUrl = "https://www.youtube.com/embed/" + selectedLaunch.links?.youTubeId + "?autoplay=1";
                     return (
                         <div style={{ marginTop: '20px', textAlign: 'center' }}>
                             <iframe
@@ -75,12 +71,13 @@ function App() {
                             ></iframe>
                         </div>
                     );
-                })() : null} </h1>)
+                })() : null}
+                </h1>)
                 : (<><h1 id="tableLabel" style={{ textAlign: 'center' }}>Rocket Launches</h1></>)}
 
             {selectedLaunch ? (
                 <div style={{ marginTop: '20px', padding: '10px' }}>
-                    <p>Launch ID: {selectedLaunch.id}</p>
+                    <p><strong>Launch ID</strong>: {selectedLaunch.id}</p>
                     <p><strong>Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>                   
                     <p><strong>Outcome: </strong>
                         {selectedLaunch.success === null && selectedLaunch.dateUtc !== null

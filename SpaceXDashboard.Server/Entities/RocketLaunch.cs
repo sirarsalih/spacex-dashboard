@@ -43,8 +43,11 @@ namespace SpaceXDashboard.Server.Entities
         [JsonProperty("wikipedia")]
         public string Wikipedia { get; set; }
 
+        [JsonProperty("youtube_id")]
+        public string YouTubeId { get; set; }
+
         [JsonProperty("webcast")]
-        public string Video { get; set; }    
+        public string Webcast { get; set; }    
 
         [JsonProperty("patch")]
         public Patch Patch { get; set; }     
