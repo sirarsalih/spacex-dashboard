@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SpaceXDashboard.Server.JsonEntities;
 
-namespace SpaceXDashboard.Server.Entities
+namespace SpaceXDashboard.Server.JsonEntities.RocketLaunch
 {
     public class RocketLaunch
     {
