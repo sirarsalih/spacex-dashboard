@@ -73,7 +73,7 @@ function App() {
                     );
                 })() : null}
                 </h1>)
-                : (<><h1 id="tableLabel" style={{ textAlign: 'center' }}>Rocket Launches</h1></>)}
+                : (<><img src="/spacex-logo-animation.gif" alt="App Logo" width="575" /><br /><div style={{ fontSize: '10px' }}>Design and animation by Dmitriy Ivanenko</div></>)}
 
             {selectedLaunch ? (
                 <div style={{ marginTop: '20px', padding: '10px' }}>
