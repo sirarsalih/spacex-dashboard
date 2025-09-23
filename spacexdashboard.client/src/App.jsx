@@ -98,7 +98,7 @@ function App() {
             ) : (
                 <>
                     {launches.length === 0 ? (
-                        <p><em>Loading... Please refresh page.</em></p>
+                        <p><em>Loading rocket launches...</em></p>
                     ) : (
                         <>
                             <table className="table table-striped" aria-labelledby="tableLabel">
@@ -179,12 +179,22 @@ function App() {
         return `${day}-${month}-${year} ${strHours}:${minutes} ${ampm} ${timeZone}`;
     }
 
-    async function populateRocketLaunchesData() {
-        const response = await fetch('rocketlaunches');
-        if (response.ok) {
-            const data = await response.json();
-            setLaunches(data);
+    async function populateRocketLaunchesData(retries = 5, delay = 2000) {
+        for (let i = 0; i < retries; i++) {
+            try {
+                const response = await fetch('rocketlaunches');
+                if (response.ok) {
+                    const data = await response.json();
+                    setLaunches(data);
+                    return; // Success, stop retrying
+                }
+            } catch (err) {
+                console.error("API not ready yet, retrying...", err);
+            }
+            // Wait before retry
+            await new Promise(res => setTimeout(res, delay));
         }
+        console.error("Failed to fetch rocket launches after retries");
     }
 }
 
