@@ -63,11 +63,6 @@ function App() {
         }
     };
 
-    const handleBackToList = () => {
-        setSelectedLaunch(null);
-        window.history.pushState(null, "", "#");
-    };
-
     return (
         <div>
             {selectedLaunch ? (
@@ -112,10 +107,7 @@ function App() {
                     <p><strong>Outcome:</strong> {selectedLaunch.success === null
                         ? selectedLaunch.dateUtcRaw === null ? "Not launched" : "Unknown"
                         : selectedLaunch.success ? "Success" : "Failed"}</p>
-                    <p><strong>Details:</strong> {selectedLaunch.details?.trim() || "N/A"}</p>
-                    <div style={{ textAlign: 'center' }}>
-                        <button onClick={handleBackToList}>Back to List</button>
-                    </div>
+                    <p><strong>Details:</strong> {selectedLaunch.details?.trim() || "N/A"}</p>              
                 </div>
             ) : (
                 <>
