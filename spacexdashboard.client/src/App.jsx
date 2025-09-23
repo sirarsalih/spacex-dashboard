@@ -149,8 +149,8 @@ function App() {
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder="Search by launch name..."
-                                    style={{ padding: '5px', width: '602px', boxSizing: 'border-box' }}
+                                    placeholder="Search by sat name..."
+                                    style={{ padding: '5px', width: '622px', boxSizing: 'border-box' }}
                                 />
                             </div>
 

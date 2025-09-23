@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SpaceXDashboard.Server.JsonEntities;
 
 namespace SpaceXDashboard.Server.Entities
 {
@@ -30,35 +31,5 @@ namespace SpaceXDashboard.Server.Entities
 
         [JsonProperty("links")]
         public LaunchLinks Links { get; set; } //Web links including articles, Wikipedia, video and patch images
-    }
-
-    public class LaunchLinks
-    {
-        [JsonProperty("presskit")]
-        public string Presskit { get; set; }
-
-        [JsonProperty("article")]
-        public string Article { get; set; }   
-
-        [JsonProperty("wikipedia")]
-        public string Wikipedia { get; set; }
-
-        [JsonProperty("youtube_id")]
-        public string YouTubeId { get; set; }
-
-        [JsonProperty("webcast")]
-        public string Webcast { get; set; }    
-
-        [JsonProperty("patch")]
-        public Patch Patch { get; set; }     
-    }
-
-    public class Patch
-    {
-        [JsonProperty("small")]
-        public string MissionPatchSmall { get; set; }
-
-        [JsonProperty("large")]
-        public string MissionPatch { get; set; }
-    }
+    }   
 }
