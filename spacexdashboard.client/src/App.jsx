@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
@@ -7,12 +7,12 @@ function App() {
     const [selectedLaunch, setSelectedLaunch] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const itemsPerPage = 15;
 
     useEffect(() => {
         populateRocketLaunchesData();
 
-        // Handle browser back/forward
         const handlePopState = (event) => {
             if (event.state?.launchId) {
                 handleLaunchClick(event.state.launchId, false);
@@ -21,22 +21,46 @@ function App() {
             }
         };
         window.addEventListener("popstate", handlePopState);
-
         return () => window.removeEventListener("popstate", handlePopState);
     }, []);
 
-    // Live search effect (table content only)
     useEffect(() => {
-        if (searchQuery.trim() === "") {
-            setFilteredLaunches(launches);
-        } else {
-            const filtered = launches.filter(l =>
+        let filtered = launches;
+        if (searchQuery.trim() !== "") {
+            filtered = launches.filter(l =>
                 l.name.toLowerCase().includes(searchQuery.toLowerCase())
             );
-            setFilteredLaunches(filtered);
-            setCurrentPage(1);
         }
-    }, [searchQuery, launches]);
+
+        if (sortConfig.key) {
+            filtered = [...filtered].sort((a, b) => {
+                let aValue, bValue;
+                switch (sortConfig.key) {
+                    case 'name':
+                        aValue = a.name.toLowerCase();
+                        bValue = b.name.toLowerCase();
+                        break;
+                    case 'date':
+                        aValue = a.dateUtcRaw === "null" ? 0 : new Date(a.dateUtcRaw).getTime();
+                        bValue = b.dateUtcRaw === "null" ? 0 : new Date(b.dateUtcRaw).getTime();
+                        break;
+                    case 'outcome':
+                        aValue = a.success === null ? (a.dateUtcRaw === null ? 0 : 1) : a.success ? 2 : 3;
+                        bValue = b.success === null ? (b.dateUtcRaw === null ? 0 : 1) : b.success ? 2 : 3;
+                        break;
+                    default:
+                        aValue = '';
+                        bValue = '';
+                }
+                if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+                if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        setFilteredLaunches(filtered);
+        setCurrentPage(1);
+    }, [searchQuery, launches, sortConfig]);
 
     const indexOfLast = currentPage * itemsPerPage;
     const indexOfFirst = indexOfLast - itemsPerPage;
@@ -46,7 +70,6 @@ function App() {
     const handleNext = () => { if (currentPage < totalPages) setCurrentPage(currentPage + 1); };
     const handlePrev = () => { if (currentPage > 1) setCurrentPage(currentPage - 1); };
 
-    // handleLaunchClick optionally pushes state (push = true)
     const handleLaunchClick = async (launchId, push = true) => {
         try {
             const response = await fetch(`rocketlaunches/${launchId}`);
@@ -54,13 +77,19 @@ function App() {
                 const data = await response.json();
                 setSelectedLaunch(data);
                 if (push) window.history.pushState({ launchId }, "", `${launchId}`);
-            } else {
-                setSelectedLaunch(null);
-            }
-        } catch (error) {
-            console.error("Error fetching launch details:", error);
+            } else setSelectedLaunch(null);
+        } catch (err) {
+            console.error(err);
             setSelectedLaunch(null);
         }
+    };
+
+    const handleSort = (key) => {
+        let direction = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
     };
 
     return (
@@ -77,7 +106,7 @@ function App() {
                     </div>
                     {selectedLaunch.name}
                     {selectedLaunch.links?.webcast && (() => {
-                        const videoUrl = "https://www.youtube.com/embed/" + selectedLaunch.links?.youTubeId + "?autoplay=1";
+                        const videoUrl = `https://www.youtube.com/embed/${selectedLaunch.links.youTubeId}?autoplay=1`;
                         return (
                             <div style={{ marginTop: '20px', textAlign: 'center' }}>
                                 <iframe
@@ -107,7 +136,7 @@ function App() {
                     <p><strong>Outcome:</strong> {selectedLaunch.success === null
                         ? selectedLaunch.dateUtcRaw === null ? "Not launched" : "Unknown"
                         : selectedLaunch.success ? "Success" : "Failed"}</p>
-                    <p><strong>Details:</strong> {selectedLaunch.details?.trim() || "N/A"}</p>              
+                    <p><strong>Details:</strong> {selectedLaunch.details?.trim() || "N/A"}</p>
                 </div>
             ) : (
                 <>
@@ -115,7 +144,6 @@ function App() {
                         <p><em>Loading rocket launches...</em></p>
                     ) : (
                         <>
-                            {/* Fixed size search input */}
                             <div style={{ marginBottom: '10px', marginTop: '15px', marginLeft: '17px' }}>
                                 <input
                                     type="text"
@@ -126,23 +154,39 @@ function App() {
                                 />
                             </div>
 
-                            {/* Fixed size table container */}
                             <div style={{ display: 'inline-block', width: '800px', maxHeight: '600px', overflowY: 'auto' }}>
                                 <table className="table table-striped" style={{ tableLayout: 'fixed', width: '100%' }}>
                                     <thead>
-                                        <tr style={{ textAlign: 'left' }}>
-                                            <th>Launch Name</th>
-                                            <th>Launch Time</th>
-                                            <th>Outcome</th>
+                                        <tr style={{ textAlign: 'left', cursor: 'pointer' }}>
+                                            <th onClick={() => handleSort('name')}>
+                                                Sat Name{' '}
+                                                <span style={{ display: 'inline-block', width: '20px' }}>
+                                                    {sortConfig.key === 'name'
+                                                        ? (sortConfig.direction === 'asc' ? '↑' : '↓')
+                                                        : '↑↓'}
+                                                </span>
+                                            </th>
+                                            <th onClick={() => handleSort('date')}>
+                                                Launch Time{' '}
+                                                <span style={{ display: 'inline-block', width: '20px' }}>
+                                                    {sortConfig.key === 'date'
+                                                        ? (sortConfig.direction === 'asc' ? '↑' : '↓')
+                                                        : '↑↓'}
+                                                </span>
+                                            </th>
+                                            <th onClick={() => handleSort('outcome')}>
+                                                Outcome{' '}
+                                                <span style={{ display: 'inline-block', width: '20px' }}>
+                                                    {sortConfig.key === 'outcome'
+                                                        ? (sortConfig.direction === 'asc' ? '↑' : '↓')
+                                                        : '↑↓'}
+                                                </span>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {currentLaunches.map(launch => (
-                                            <tr
-                                                key={launch.id}
-                                                style={{ cursor: 'pointer' }}
-                                                onClick={() => handleLaunchClick(launch.id)}
-                                            >
+                                            <tr key={launch.id} style={{ cursor: 'pointer' }} onClick={() => handleLaunchClick(launch.id)}>
                                                 <td>
                                                     {launch.links.patch.missionPatchSmall && (
                                                         <img
@@ -165,7 +209,6 @@ function App() {
                                 </table>
                             </div>
 
-                            {/* Pagination */}
                             <div style={{ marginTop: '10px', marginLeft: '160px' }}>
                                 <button onClick={handlePrev} disabled={currentPage === 1}>Previous</button>
                                 <span style={{ margin: '0 10px' }}>Page {currentPage} of {totalPages}</span>
