@@ -7,7 +7,7 @@ function App() {
     const [selectedLaunch, setSelectedLaunch] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
-    const itemsPerPage = 20;
+    const itemsPerPage = 15;
 
     useEffect(() => {
         populateRocketLaunchesData();
@@ -91,8 +91,8 @@ function App() {
                 </h1>
             ) : (
                 <>
-                    <img src="/spacex-logo-animation.gif" alt="App Logo" width="400" style={{ marginLeft: '80px' }} />
-                    <div style={{ fontSize: '10px', marginLeft: '80px' }}>Logo design & animation by Dmitriy Ivanenko</div>
+                    <img src="/spacex-logo-animation.gif" alt="App Logo" width="400" style={{ marginLeft: '115px', marginTop: '-150px' }} />
+                    <div style={{ fontSize: '10px', marginLeft: '115px' }}>Logo design & animation by Dmitriy Ivanenko</div>
                 </>
             )}
 
@@ -123,61 +123,67 @@ function App() {
                     ) : (
                         <>
                             {/* Live Search Input */}
-                            <div style={{ textAlign: 'center', marginBottom: '10px', marginTop: '15px' }}>
+                            <div style={{ marginBottom: '10px', marginTop: '15px', marginLeft: '17px' }}>
                                 <input
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Search by launch name..."
-                                    style={{ padding: '5px', width: '525px' }}
+                                    style={{
+                                        padding: '5px',
+                                        width: '602px',
+                                        boxSizing: 'border-box' // ensures padding doesn't increase width
+                                    }}
                                 />
                             </div>
 
-                            <table className="table table-striped" aria-labelledby="tableLabel">
-                                <thead>
-                                    <tr style={{ textAlign: 'left' }}>
-                                        <th>Launch Name</th>
-                                        <th>Launch Time</th>
-                                        <th>Outcome</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {currentLaunches.map(launch =>
-                                        <tr
-                                            key={launch.id}
-                                            style={{ cursor: 'pointer' }}
-                                            onClick={() => handleLaunchClick(launch.id)}
-                                        >
-                                            <td>
-                                                {launch.links.patch.missionPatchSmall && (
-                                                    <img
-                                                        src={launch.links.patch.missionPatchSmall}
-                                                        alt={`${launch.name} patch`}
-                                                        style={{
-                                                            width: '30px',
-                                                            height: '30px',
-                                                            marginRight: '8px',
-                                                            verticalAlign: 'middle'
-                                                        }}
-                                                    />
-                                                )} {launch.name}
-                                            </td>
-                                            <td>{launch.dateUtcRaw === "null" ? "TBD" : formatDate(launch.dateUtcRaw)}</td>
-                                            <td>
-                                                {launch.success === null && launch.dateUtcRaw !== null
-                                                    ? "Unknown"
-                                                    : launch.success === null && launch.dateUtcRaw === null
-                                                        ? "Not launched"
-                                                        : launch.success === true
-                                                            ? "Success"
-                                                            : "Failed"}
-                                            </td>
+                            <div style={{ display: 'inline-block', width: '800px', maxHeight: '600px', overflowY: 'auto' }}>
+                                <table className="table table-striped" style={{ tableLayout: 'fixed', width: '100%' }}>
+                                    <thead>
+                                        <tr style={{ textAlign: 'left' }}>
+                                            <th>Launch Name</th>
+                                            <th>Launch Time</th>
+                                            <th>Outcome</th>
                                         </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {currentLaunches.map(launch => (
+                                            <tr
+                                                key={launch.id}
+                                                style={{ cursor: 'pointer' }}
+                                                onClick={() => handleLaunchClick(launch.id)}
+                                            >
+                                                <td>
+                                                    {launch.links.patch.missionPatchSmall && (
+                                                        <img
+                                                            src={launch.links.patch.missionPatchSmall}
+                                                            alt={`${launch.name} patch`}
+                                                            style={{
+                                                                width: '30px',
+                                                                height: '30px',
+                                                                marginRight: '8px',
+                                                                verticalAlign: 'middle'
+                                                            }}
+                                                        />
+                                                    )} {launch.name}
+                                                </td>
+                                                <td>{launch.dateUtcRaw === "null" ? "TBD" : formatDate(launch.dateUtcRaw)}</td>
+                                                <td>
+                                                    {launch.success === null && launch.dateUtcRaw !== null
+                                                        ? "Unknown"
+                                                        : launch.success === null && launch.dateUtcRaw === null
+                                                            ? "Not launched"
+                                                            : launch.success === true
+                                                                ? "Success"
+                                                                : "Failed"}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
 
-                            <div style={{ marginTop: '10px', textAlign: 'center' }}>
+                            <div style={{ marginTop: '10px', marginLeft: '160px' }}>
                                 <button onClick={handlePrev} disabled={currentPage === 1}>Previous</button>
                                 <span style={{ margin: '0 10px' }}>Page {currentPage} of {totalPages}</span>
                                 <button onClick={handleNext} disabled={currentPage === totalPages}>Next</button>
