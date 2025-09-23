@@ -11,9 +11,21 @@ function App() {
 
     useEffect(() => {
         populateRocketLaunchesData();
+
+        // Handle browser back/forward
+        const handlePopState = (event) => {
+            if (event.state?.launchId) {
+                handleLaunchClick(event.state.launchId, false);
+            } else {
+                setSelectedLaunch(null);
+            }
+        };
+        window.addEventListener("popstate", handlePopState);
+
+        return () => window.removeEventListener("popstate", handlePopState);
     }, []);
 
-    // Live search effect
+    // Live search effect (table content only)
     useEffect(() => {
         if (searchQuery.trim() === "") {
             setFilteredLaunches(launches);
@@ -31,20 +43,17 @@ function App() {
     const currentLaunches = filteredLaunches.slice(indexOfFirst, indexOfLast);
     const totalPages = Math.ceil(filteredLaunches.length / itemsPerPage);
 
-    const handleNext = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
+    const handleNext = () => { if (currentPage < totalPages) setCurrentPage(currentPage + 1); };
+    const handlePrev = () => { if (currentPage > 1) setCurrentPage(currentPage - 1); };
 
-    const handlePrev = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
-
-    const handleLaunchClick = async (launchId) => {
+    // handleLaunchClick optionally pushes state (push = true)
+    const handleLaunchClick = async (launchId, push = true) => {
         try {
             const response = await fetch(`rocketlaunches/${launchId}`);
             if (response.ok) {
                 const data = await response.json();
                 setSelectedLaunch(data);
+                if (push) window.history.pushState({ launchId }, "", `#launch-${launchId}`);
             } else {
                 setSelectedLaunch(null);
             }
@@ -54,9 +63,9 @@ function App() {
         }
     };
 
-    // Back button preserves currentPage
     const handleBackToList = () => {
         setSelectedLaunch(null);
+        window.history.pushState(null, "", "#");
     };
 
     return (
@@ -72,8 +81,8 @@ function App() {
                         )}
                     </div>
                     {selectedLaunch.name}
-                    {selectedLaunch.links?.webcast ? (() => {
-                        var videoUrl = "https://www.youtube.com/embed/" + selectedLaunch.links?.youTubeId + "?autoplay=1";
+                    {selectedLaunch.links?.webcast && (() => {
+                        const videoUrl = "https://www.youtube.com/embed/" + selectedLaunch.links?.youTubeId + "?autoplay=1";
                         return (
                             <div style={{ marginTop: '20px', textAlign: 'center' }}>
                                 <iframe
@@ -84,10 +93,10 @@ function App() {
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
-                                ></iframe>
+                                />
                             </div>
                         );
-                    })() : null}
+                    })()}
                 </h1>
             ) : (
                 <>
@@ -98,20 +107,12 @@ function App() {
 
             {selectedLaunch ? (
                 <div style={{ marginTop: '20px', padding: '10px' }}>
-                    <p><strong>Launch ID</strong>: {selectedLaunch.id}</p>
+                    <p><strong>Launch ID:</strong> {selectedLaunch.id}</p>
                     <p><strong>Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>
-                    <p><strong>Outcome: </strong>
-                        {selectedLaunch.success === null && selectedLaunch.dateUtc !== null
-                            ? "Unknown"
-                            : selectedLaunch.success === null && selectedLaunch.dateUtc === null
-                                ? "Not launched"
-                                : selectedLaunch.success === true
-                                    ? "Success"
-                                    : "Failed"}
-                    </p>
-                    <p><strong>Details: </strong>{selectedLaunch.details && selectedLaunch.details.trim() !== ""
-                        ? selectedLaunch.details
-                        : "N/A"}</p>
+                    <p><strong>Outcome:</strong> {selectedLaunch.success === null
+                        ? selectedLaunch.dateUtcRaw === null ? "Not launched" : "Unknown"
+                        : selectedLaunch.success ? "Success" : "Failed"}</p>
+                    <p><strong>Details:</strong> {selectedLaunch.details?.trim() || "N/A"}</p>
                     <div style={{ textAlign: 'center' }}>
                         <button onClick={handleBackToList}>Back to List</button>
                     </div>
@@ -122,21 +123,18 @@ function App() {
                         <p><em>Loading rocket launches...</em></p>
                     ) : (
                         <>
-                            {/* Live Search Input */}
+                            {/* Fixed size search input */}
                             <div style={{ marginBottom: '10px', marginTop: '15px', marginLeft: '17px' }}>
                                 <input
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Search by launch name..."
-                                    style={{
-                                        padding: '5px',
-                                        width: '602px',
-                                        boxSizing: 'border-box' // ensures padding doesn't increase width
-                                    }}
+                                    style={{ padding: '5px', width: '602px', boxSizing: 'border-box' }}
                                 />
                             </div>
 
+                            {/* Fixed size table container */}
                             <div style={{ display: 'inline-block', width: '800px', maxHeight: '600px', overflowY: 'auto' }}>
                                 <table className="table table-striped" style={{ tableLayout: 'fixed', width: '100%' }}>
                                     <thead>
@@ -158,24 +156,16 @@ function App() {
                                                         <img
                                                             src={launch.links.patch.missionPatchSmall}
                                                             alt={`${launch.name} patch`}
-                                                            style={{
-                                                                width: '30px',
-                                                                height: '30px',
-                                                                marginRight: '8px',
-                                                                verticalAlign: 'middle'
-                                                            }}
+                                                            style={{ width: '30px', height: '30px', marginRight: '8px', verticalAlign: 'middle' }}
                                                         />
-                                                    )} {launch.name}
+                                                    )}
+                                                    {launch.name}
                                                 </td>
                                                 <td>{launch.dateUtcRaw === "null" ? "TBD" : formatDate(launch.dateUtcRaw)}</td>
                                                 <td>
-                                                    {launch.success === null && launch.dateUtcRaw !== null
-                                                        ? "Unknown"
-                                                        : launch.success === null && launch.dateUtcRaw === null
-                                                            ? "Not launched"
-                                                            : launch.success === true
-                                                                ? "Success"
-                                                                : "Failed"}
+                                                    {launch.success === null
+                                                        ? launch.dateUtcRaw === null ? "Not launched" : "Unknown"
+                                                        : launch.success ? "Success" : "Failed"}
                                                 </td>
                                             </tr>
                                         ))}
@@ -183,6 +173,7 @@ function App() {
                                 </table>
                             </div>
 
+                            {/* Pagination */}
                             <div style={{ marginTop: '10px', marginLeft: '160px' }}>
                                 <button onClick={handlePrev} disabled={currentPage === 1}>Previous</button>
                                 <span style={{ margin: '0 10px' }}>Page {currentPage} of {totalPages}</span>
@@ -197,23 +188,17 @@ function App() {
 
     function formatDate(dateString) {
         const date = new Date(dateString);
-
         const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-
         let hours = date.getHours();
         const minutes = String(date.getMinutes()).padStart(2, '0');
         const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // convert 0 to 12
+        hours = hours % 12 || 12;
         const strHours = String(hours).padStart(2, '0');
-
-        // Get timezone abbreviation using Intl.DateTimeFormat
         const timeZone = Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
             .formatToParts(date)
             .find(part => part.type === 'timeZoneName')?.value || '';
-
         return `${day}-${month}-${year} ${strHours}:${minutes} ${ampm} ${timeZone}`;
     }
 
@@ -224,13 +209,12 @@ function App() {
                 if (response.ok) {
                     const data = await response.json();
                     setLaunches(data);
-                    setFilteredLaunches(data); // initialize filtered list
-                    return; // Success, stop retrying
+                    setFilteredLaunches(data);
+                    return;
                 }
             } catch (err) {
                 console.error("API not ready yet, retrying...", err);
             }
-            // Wait before retry
             await new Promise(res => setTimeout(res, delay));
         }
         console.error("Failed to fetch rocket launches after retries");
