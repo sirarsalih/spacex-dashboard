@@ -1,73 +1,73 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SpaceXDashboard.Server.JsonEntities.Rocket
 {
     public class Rocket
     {
-        [JsonPropertyName("height")]
+        [JsonProperty("height")]
         public Dimension Height { get; set; }
 
-        [JsonPropertyName("diameter")]
+        [JsonProperty("diameter")]
         public Dimension Diameter { get; set; }
 
-        [JsonPropertyName("mass")]
+        [JsonProperty("mass")]
         public Mass Mass { get; set; }
 
-        [JsonPropertyName("first_stage")]
+        [JsonProperty("first_stage")]
         public Stage FirstStage { get; set; }
 
-        [JsonPropertyName("second_stage")]
+        [JsonProperty("second_stage")]
         public Stage SecondStage { get; set; }
 
-        [JsonPropertyName("engines")]
+        [JsonProperty("engines")]
         public Engines Engines { get; set; }
 
-        [JsonPropertyName("landing_legs")]
+        [JsonProperty("landing_legs")]
         public LandingLegs LandingLegs { get; set; }
 
-        [JsonPropertyName("payload_weights")]
+        [JsonProperty("payload_weights")]
         public List<PayloadWeight> PayloadWeights { get; set; }
 
-        [JsonPropertyName("flickr_images")]
+        [JsonProperty("flickr_images")]
         public List<string> FlickrImages { get; set; }
 
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("type")]
+        [JsonProperty("type")]
         public string Type { get; set; }
 
-        [JsonPropertyName("active")]
+        [JsonProperty("active")]
         public bool Active { get; set; }
 
-        [JsonPropertyName("stages")]
+        [JsonProperty("stages")]
         public int Stages { get; set; }
 
-        [JsonPropertyName("boosters")]
+        [JsonProperty("boosters")]
         public int Boosters { get; set; }
 
-        [JsonPropertyName("cost_per_launch")]
+        [JsonProperty("cost_per_launch")]
         public long CostPerLaunch { get; set; }
 
-        [JsonPropertyName("success_rate_pct")]
+        [JsonProperty("success_rate_pct")]
         public int SuccessRatePct { get; set; }
 
-        [JsonPropertyName("first_flight")]
+        [JsonProperty("first_flight")]
         public string FirstFlight { get; set; }
 
-        [JsonPropertyName("country")]
+        [JsonProperty("country")]
         public string Country { get; set; }
 
-        [JsonPropertyName("company")]
+        [JsonProperty("company")]
         public string Company { get; set; }
 
-        [JsonPropertyName("wikipedia")]
+        [JsonProperty("wikipedia")]
         public string Wikipedia { get; set; }
 
-        [JsonPropertyName("description")]
+        [JsonProperty("description")]
         public string Description { get; set; }
 
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public string Id { get; set; }
     }     
 }

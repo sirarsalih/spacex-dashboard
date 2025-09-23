@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SpaceXDashboard.Server.JsonEntities.Rocket
 {
     public class Thrust
     {
-        [JsonPropertyName("kN")]
+        [JsonProperty("kN")]
         public int KN { get; set; }
 
-        [JsonPropertyName("lbf")]
+        [JsonProperty("lbf")]
         public int Lbf { get; set; }
     }
 }

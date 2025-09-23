@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SpaceXDashboard.Server.JsonEntities.Rocket
 {
     public class Payloads
     {
-        [JsonPropertyName("composite_fairing")]
+        [JsonProperty("composite_fairing")]
         public CompositeFairing CompositeFairing { get; set; }
 
-        [JsonPropertyName("option_1")]
+        [JsonProperty("option_1")]
         public string Option1 { get; set; }
     }
 }

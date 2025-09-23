@@ -142,6 +142,44 @@ function App() {
                                 <p><strong>Country:</strong> {selectedLaunch.rocketData.country}</p>
                                 <p><strong>Company:</strong> {selectedLaunch.rocketData.company}</p>
                                 <p><strong>Description:</strong> {selectedLaunch.rocketData.description}</p>
+
+                                {selectedLaunch.rocketData.flickrImages?.length > 0 && (
+                                    <div>
+                                        <h3>Rocket Images</h3>
+                                        <div
+                                            style={{
+                                                display: 'grid',
+                                                gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+                                                gap: '10px',
+                                                marginTop: '10px'
+                                            }}
+                                        >
+                                            {selectedLaunch.rocketData.flickrImages.map((url, index) => (
+                                                <a
+                                                    key={index}
+                                                    href={url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <img
+                                                        src={url}
+                                                        alt={`Rocket image ${index + 1}`}
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '150px',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '6px',
+                                                            transition: 'transform 0.2s',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                        onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+                                                        onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                                                    />
+                                                </a>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </>
                         )}
                     </div>

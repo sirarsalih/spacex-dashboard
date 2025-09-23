@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SpaceXDashboard.Server.JsonEntities.Rocket
 {
     public class Mass
     {
-        [JsonPropertyName("kg")]
+        [JsonProperty("kg")]
         public int Kg { get; set; }
 
-        [JsonPropertyName("lb")]
+        [JsonProperty("lb")]
         public int Lb { get; set; }
     }
 }

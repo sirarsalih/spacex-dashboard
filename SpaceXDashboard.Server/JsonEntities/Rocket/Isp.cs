@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SpaceXDashboard.Server.JsonEntities.Rocket
 {
     public class Isp
     {
-        [JsonPropertyName("sea_level")]
+        [JsonProperty("sea_level")]
         public int SeaLevel { get; set; }
 
-        [JsonPropertyName("vacuum")]
+        [JsonProperty("vacuum")]
         public int Vacuum { get; set; }
     }
 }

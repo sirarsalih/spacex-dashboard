@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SpaceXDashboard.Server.JsonEntities.Rocket
 {
     public class LandingLegs
     {
-        [JsonPropertyName("number")]
+        [JsonProperty("number")]
         public int Number { get; set; }
 
-        [JsonPropertyName("material")]
+        [JsonProperty("material")]
         public string Material { get; set; }
     }
 }

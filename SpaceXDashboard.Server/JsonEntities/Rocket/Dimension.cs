@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SpaceXDashboard.Server.JsonEntities.Rocket
 {
     public class Dimension
     {
-        [JsonPropertyName("meters")]
+        [JsonProperty("meters")]
         public double Meters { get; set; }
 
-        [JsonPropertyName("feet")]
+        [JsonProperty("feet")]
         public double Feet { get; set; }
     }
 }

@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SpaceXDashboard.Server.JsonEntities.Rocket
 {
     public class CompositeFairing
     {
-        [JsonPropertyName("height")]
+        [JsonProperty("height")]
         public Dimension Height { get; set; }
 
-        [JsonPropertyName("diameter")]
+        [JsonProperty("diameter")]
         public Dimension Diameter { get; set; }
     }
 }
