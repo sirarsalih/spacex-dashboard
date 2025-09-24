@@ -220,7 +220,7 @@ function App() {
                                     </thead>
                                     <tbody>
                                         {currentLaunches.map(launch => (
-                                            <tr key={launch.id} style={{ cursor: 'pointer' }} onClick={() => handleLaunchClick(launch.id)}>
+                                            <tr key={launch.id} className="table-row" style={{ cursor: 'pointer' }} onClick={() => handleLaunchClick(launch.id)}>
                                                 <td>
                                                     {launch.links?.patch?.missionPatchSmall ? (
                                                         <img

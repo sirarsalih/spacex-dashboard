@@ -8,3 +8,13 @@ th, td {
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+.table-row {
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.table-row:hover {
+    background-color: #ffffff; /* SpaceX deep navy */
+    color: #000000;
+}
