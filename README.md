@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="public/spacex-logo.png" alt="SpaceX Logo" width="200"/>
-</p>
-
 # SpaceX Database
 SpaceX Database is a convenient website made for searching SpaceX rocket launches and fetching important information related to the launches, including rocket information. The website calls the open source SpaceX API to fetch and display this information in a user friendly way.
 
