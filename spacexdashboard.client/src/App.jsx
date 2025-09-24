@@ -221,12 +221,16 @@ function App() {
                                         {currentLaunches.map(launch => (
                                             <tr key={launch.id} style={{ cursor: 'pointer' }} onClick={() => handleLaunchClick(launch.id)}>
                                                 <td>
-                                                    {launch.links?.patch?.missionPatchSmall && (
+                                                    {launch.links?.patch?.missionPatchSmall ? (
                                                         <img
                                                             src={launch.links.patch.missionPatchSmall}
                                                             alt={`${launch.name} patch`}
-                                                            style={{ width: '30px', height: '30px', marginRight: '8px', verticalAlign: 'middle' }}
+                                                            style={{ width: '30px', height: '30px', marginRight: '3px', verticalAlign: 'middle' }}
                                                         />
+                                                    ) : (
+                                                        <span style={{ marginRight: '5px', fontSize: '12px', color: '#888' }}>
+                                                            [No Patch]
+                                                        </span>
                                                     )}
                                                     {launch.name}
                                                 </td>
