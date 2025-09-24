@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using SpaceXDashboard.Server.JsonEntities.Rocket;
 using SpaceXDashboard.Server.JsonEntities.RocketLaunch;
 using SpaceXDashboard.Server.Services;
 

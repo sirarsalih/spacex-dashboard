@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SpaceXDashboard.Server.Controllers;
+﻿using Newtonsoft.Json;
 using SpaceXDashboard.Server.JsonEntities.Rocket;
 using SpaceXDashboard.Server.JsonEntities.RocketLaunch;
-using System.Text.Json;
 
 namespace SpaceXDashboard.Server.Services
 {
@@ -20,7 +16,7 @@ namespace SpaceXDashboard.Server.Services
         private readonly ILogger<SpaceXAPIService> _logger;
         private readonly HttpClient _httpClient;
         private const string _ROCKET_LANUCHES_API_BASE_URL = "https://api.spacexdata.com/v5/launches";
-        private const string _ROCKETS_API_BASE_URL = "https://api.spacexdata.com/v4/rockets"; //As of today, there is no v5
+        private const string _ROCKETS_API_BASE_URL = "https://api.spacexdata.com/v4/rockets"; //As of today there is no v5 for fetching rockets
 
         public SpaceXAPIService(ILogger<SpaceXAPIService> logger, HttpClient httpClient)
         {
