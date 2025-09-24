@@ -127,8 +127,11 @@ function App() {
                     )}
 
                     <div style={{ marginTop: '20px', padding: '10px', textAlign: 'left', maxWidth: '700px', margin: 'auto' }}>
+                        <h2>Launch Details</h2>  
                         <p><strong>Launch ID:</strong> {selectedLaunch.id}</p>
+                        <p><strong>Launch Name:</strong> {selectedLaunch.name}</p>
                         <p><strong>Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>
+                        <p><strong>Rocket ID:</strong> {selectedLaunch.rocketId}</p>
                         <p><strong>Outcome:</strong> {selectedLaunch.success === null
                             ? selectedLaunch.dateUtcRaw === null ? "Not launched" : "Unknown"
                             : selectedLaunch.success ? "Success" : "Failed"}</p>
@@ -137,8 +140,18 @@ function App() {
                         {selectedLaunch.rocketData && (
                             <>
                                 <h2>Rocket Details</h2>                                
+                                <p><strong>Rocket ID:</strong> {selectedLaunch.rocketData.id}</p>
                                 <p><strong>Name:</strong> {selectedLaunch.rocketData.name}</p>
                                 <p><strong>Type:</strong> {selectedLaunch.rocketData.type}</p>
+                                <p><strong>First Flight Date:</strong> {selectedLaunch.rocketData.firstFlight}</p>
+                                <p><strong>Active:</strong> {selectedLaunch.rocketData.active ? "Yes" : "No"}</p>
+                                <p><strong>Height:</strong> {selectedLaunch.rocketData.height.meters} meters ({selectedLaunch.rocketData.height.feet} feet)</p>
+                                <p><strong>Diameter:</strong> {selectedLaunch.rocketData.diameter.meters} meters ({selectedLaunch.rocketData.diameter.feet} feet)</p>
+                                <p><strong>Mass:</strong> {selectedLaunch.rocketData.mass.kg} kg ({selectedLaunch.rocketData.mass.lb} lb)</p>
+                                <p><strong>Landing Legs Number:</strong> {selectedLaunch.rocketData.landingLegs.number}</p>
+                                <p><strong>Landing Legs Material:</strong> {selectedLaunch.rocketData.landingLegs.material}</p>
+                                <p><strong>Cost Per Launch:</strong> {selectedLaunch.rocketData.costPerLaunch}</p>
+                                <p><strong>Success Rate PCT:</strong> {selectedLaunch.rocketData.successRatePct}</p>
                                 <p><strong>Country:</strong> {selectedLaunch.rocketData.country}</p>
                                 <p><strong>Company:</strong> {selectedLaunch.rocketData.company}</p>
                                 <p><strong>Description:</strong> {selectedLaunch.rocketData.description}</p>     
@@ -198,7 +211,7 @@ function App() {
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder="Search by sat name..."
+                                    placeholder="Search by launch name..."
                                     style={{ padding: '5px', width: '622px', boxSizing: 'border-box' }}
                                 />
                             </div>
@@ -208,7 +221,7 @@ function App() {
                                     <thead>
                                         <tr style={{ textAlign: 'left', cursor: 'pointer' }}>
                                             <th onClick={() => handleSort('name')}>
-                                                Sat Name <span>{sortConfig.key === 'name' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
+                                                Launch Name <span>{sortConfig.key === 'name' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
                                             </th>
                                             <th onClick={() => handleSort('date')}>
                                                 Launch Time <span>{sortConfig.key === 'date' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
