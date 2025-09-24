@@ -184,14 +184,15 @@ function App() {
                     </div>
                 </div>
             ) : (
-                <>
-                    <img src="/spacex-logo.png" alt="App Logo" width="300" style={{ marginLeft: '185px', marginTop: '-50px' }} />
-                 
-
-                    {launches.length === 0 ? (
-                        <p><em>Loading rocket launches...</em></p>
+                    <>
+                        {launches.length === 0 ? (
+                            <div style={{ marginTop: '-353px', marginLeft: '-316px' }}>
+                                <img src="/spacex-logo.png" alt="App Logo" width="300" style={{ marginLeft: '185px' }} />
+                                <div style={{ marginLeft: '225px' }}><em>Loading rocket launches...</em></div>
+                            </div>
                     ) : (
-                        <>
+                         <>
+                          <img src="/spacex-logo.png" alt="App Logo" width="300" style={{ marginLeft: '185px', marginTop: '-50px' }} />
                             <div style={{ marginBottom: '10px', marginTop: '15px', marginLeft: '17px' }}>
                                 <input
                                     type="text"
