@@ -18,3 +18,30 @@ th, td {
     background-color: #ffffff; /* SpaceX deep navy */
     color: #000000;
 }
+
+/* Launch Details 2-column layout */
+.launch-details-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* left: details, right: video */
+    gap: 20px;
+    margin-top: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.launch-details-left,
+.launch-details-right {
+    text-align: left;
+}
+
+/* Responsive: stack on mobile */
+@media (max-width: 768px) {
+    .launch-details-container {
+        grid-template-columns: 1fr;
+    }
+
+    .launch-details-right {
+        margin-top: 20px; /* add spacing below details */
+    }
+}

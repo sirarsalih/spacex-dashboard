@@ -112,30 +112,38 @@ function App() {
                         <img src={selectedLaunch.links.patch.missionPatchSmall} alt={`${selectedLaunch.name} patch`} />
                     )}
                     <h1>{selectedLaunch.name}</h1>
-                    {selectedLaunch.links?.webcast && (
-                        <div style={{ marginTop: '20px' }}>
-                            <iframe
-                                width="560"
-                                height="315"
-                                src={`https://www.youtube.com/embed/${selectedLaunch.links.youTubeId}?autoplay=1`}
-                                title="YouTube video player"
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            />
-                        </div>
-                    )}
+           
 
                     <div style={{ marginTop: '20px', padding: '10px', textAlign: 'left', maxWidth: '700px', margin: 'auto' }}>
-                        <h2>Launch Details</h2>  
-                        <p><strong>Launch ID:</strong> {selectedLaunch.id}</p>
-                        <p><strong>Launch Name:</strong> {selectedLaunch.name}</p>
-                        <p><strong>Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>
-                        <p><strong>Rocket ID:</strong> {selectedLaunch.rocketId}</p>
-                        <p><strong>Outcome:</strong> {selectedLaunch.success === null
-                            ? selectedLaunch.dateUtcRaw === null ? "Not launched" : "Unknown"
-                            : selectedLaunch.success ? "Success" : "Failed"}</p>
-                        <p><strong>Details:</strong> {selectedLaunch.details?.trim() || "N/A"}</p>
+                        <div className="launch-details-container">
+                            {/* Left column - Launch Details */}
+                            <div className="launch-details-left">
+                                <h2>Launch Details</h2>
+                                <p><strong>Launch ID:</strong> {selectedLaunch.id}</p>
+                                <p><strong>Launch Name:</strong> {selectedLaunch.name}</p>
+                                <p><strong>Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>
+                                <p><strong>Rocket ID:</strong> {selectedLaunch.rocketId}</p>
+                                <p><strong>Outcome:</strong> {selectedLaunch.success === null
+                                    ? selectedLaunch.dateUtcRaw === null ? "Not launched" : "Unknown"
+                                    : selectedLaunch.success ? "Success" : "Failed"}</p>
+                                <p><strong>Details:</strong> {selectedLaunch.details?.trim() || "N/A"}</p>
+                            </div>
+
+                            {/* Right column - YouTube Video */}
+                            {selectedLaunch.links?.youTubeId && (
+                                <div className="launch-details-right">
+                                    <iframe
+                                        width="200%"
+                                        height="315"
+                                        src={`https://www.youtube.com/embed/${selectedLaunch.links.youTubeId}?autoplay=1`}
+                                        title="YouTube video player"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    />
+                                </div>
+                            )}
+                        </div>
 
                         {selectedLaunch.rocketData && (
                             <>
