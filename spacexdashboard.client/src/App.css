@@ -45,3 +45,53 @@ th, td {
         margin-top: 20px; /* add spacing below details */
     }
 }
+
+/* Rocket Details 2-column layout */
+.rocket-details-container {
+    margin-top: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rocket-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* two columns */
+    gap: 20px;
+}
+
+.rocket-details-column p {
+    margin: 5px 0;
+}
+
+/* Rocket images grid */
+.rocket-images-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.rocket-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+    .rocket-image:hover {
+        transform: scale(1.05);
+    }
+
+/* Mobile stacking */
+@media (max-width: 768px) {
+    .rocket-details-grid {
+        grid-template-columns: 1fr; /* stack vertically on mobile */
+    }
+
+    .rocket-images-container {
+        grid-template-columns: 1fr; /* images stacked vertically */
+    }
+}
