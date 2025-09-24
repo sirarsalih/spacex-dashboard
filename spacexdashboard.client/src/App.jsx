@@ -185,8 +185,8 @@ function App() {
                 </div>
             ) : (
                 <>
-                    <img src="/spacex-logo-animation.gif" alt="App Logo" width="400" style={{ marginLeft: '115px', marginTop: '-150px' }} />
-                    <div style={{ fontSize: '10px', marginLeft: '115px' }}>Logo design & animation by Dmitriy Ivanenko</div>
+                    <img src="/spacex-logo.png" alt="App Logo" width="300" style={{ marginLeft: '185px', marginTop: '-50px' }} />
+                 
 
                     {launches.length === 0 ? (
                         <p><em>Loading rocket launches...</em></p>
