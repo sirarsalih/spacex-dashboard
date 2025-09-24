@@ -118,10 +118,10 @@ function App() {
                         <div className="launch-details-container">
                             {/* Left column - Launch Details */}
                             <div className="launch-details-left">
-                                <h2>Launch Details</h2>
-                                <p><strong>Launch ID:</strong> {selectedLaunch.id}</p>
-                                <p><strong>Launch Name:</strong> {selectedLaunch.name}</p>
-                                <p><strong>Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>
+                                <h2>Rocket Launch Details</h2>
+                                <p><strong>Rocket Launch ID:</strong> {selectedLaunch.id}</p>
+                                <p><strong>Rocket Launch Name:</strong> {selectedLaunch.name}</p>
+                                <p><strong>Rocket Launch Time:</strong> {selectedLaunch.dateUtcRaw === "null" ? "TBD" : formatDate(selectedLaunch.dateUtcRaw)}</p>
                                 <p><strong>Rocket ID:</strong> {selectedLaunch.rocketId}</p>
                                 <p><strong>Outcome:</strong> {selectedLaunch.success === null
                                     ? selectedLaunch.dateUtcRaw === null ? "Not launched" : "Unknown"
@@ -206,7 +206,7 @@ function App() {
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder="Search by launch name..."
+                                    placeholder="Search by rocket launch name..."
                                     style={{ padding: '5px', width: '622px', boxSizing: 'border-box' }}
                                 />
                             </div>
@@ -216,10 +216,10 @@ function App() {
                                     <thead>
                                         <tr style={{ textAlign: 'left', cursor: 'pointer' }}>
                                             <th onClick={() => handleSort('name')}>
-                                                Launch Name <span>{sortConfig.key === 'name' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
+                                                Rocket Launch Name <span>{sortConfig.key === 'name' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
                                             </th>
                                             <th onClick={() => handleSort('date')}>
-                                                Launch Time <span>{sortConfig.key === 'date' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
+                                                Rocket Launch Time <span>{sortConfig.key === 'date' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
                                             </th>
                                             <th onClick={() => handleSort('outcome')}>
                                                 Outcome <span>{sortConfig.key === 'outcome' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↑↓'}</span>
