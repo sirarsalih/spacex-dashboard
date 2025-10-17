@@ -9,7 +9,7 @@ https://github.com/r-spacex/SpaceX-API
 ## Features
 SpaceX Dashboard fetches all rocket launches from the SpaceX API and displays it to the user. You can search through these launches and click on each launch to display details related to the launch. We receive rich information from the SpaceX API, including links to YouTube videos and images of the rockets. In other words, there is a lot of nice information to play around with and learn from!
 
-## Tech and frameworks used
+## Tech And Frameworks Used
 SpaceX Dashboard is built using the following tech and frameworks:
 
 - .NET 9
@@ -19,13 +19,12 @@ SpaceX Dashboard is built using the following tech and frameworks:
 - XUnit
 - FakeItEasy
 
-## Future improvements
+## Future Improvements
 
 - Add JSON mapping assertion unit tests
-- Refactor the front-end; split it into more components
 - Add unit tests for the front-end
-- Add filtering feature to the rocket launches table
-- Improve the search; add cross searching (not just launch search)
+- Split the front-end into more components
+- Add filtering to the rocket launches table
+- Add cross searching
 - Setup CI/CD pipelines
-- Configure the project and deploy it to Azure as an app service
-
+- Deploy the site to Azure as an app service
